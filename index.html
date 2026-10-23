@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Joseph in the Hot Seat</title>
+  <meta name="description" content="A quiz show from Hyderabad to Dubai, with a party invitation at the end." />
+  <meta name="theme-color" content="#2a170d" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,700&family=Noto+Color+Emoji&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=1" />
+</head>
+<body>
+  <div class="spot" aria-hidden="true"></div>
+  <div class="bg-float" id="bgFloat" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <button class="sound" id="soundBtn" type="button" aria-pressed="true" aria-label="Music on">🔊</button>
+
+  <!-- ============ 1. INTRO ============ -->
+  <main class="screen" id="introScreen">
+    <div class="card">
+      <p class="eyebrow" id="greeting">Amina presents</p>
+      <h1 class="title"><span id="toName">Joseph</span> in the <span class="script" id="showName">Hot Seat</span></h1>
+
+      <div class="route" aria-label="Where we both are">
+        <div class="city">
+          <span class="city__flag" id="meFlag">🇮🇳</span>
+          <strong id="meCity">Hyderabad</strong>
+          <span class="city__clock" id="meClock">--:--</span>
+        </div>
+        <div class="route__line">
+          <svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M6 50 Q100 -10 194 50" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="6 7" stroke-linecap="round" />
+          </svg>
+          <span class="route__plane" aria-hidden="true">✈️</span>
+          <span class="route__km" id="distance">— km</span>
+        </div>
+        <div class="city">
+          <span class="city__flag" id="themFlag">🇦🇪</span>
+          <strong id="themCity">Dubai</strong>
+          <span class="city__clock" id="themClock">--:--</span>
+        </div>
+      </div>
+
+      <p class="intro__text" id="introText"></p>
+      <ul class="rules" id="rules"></ul>
+      <button class="btn btn--primary btn--big" id="startBtn" type="button">Take the hot seat 🎤</button>
+      <p class="small">Music plays after you start. Tap 🔊 to mute.</p>
+      <p class="brand" id="brand1" hidden>Made with Play Planet</p>
+    </div>
+  </main>
+
+  <!-- ============ 2. QUIZ ============ -->
+  <section class="screen" id="quizScreen" hidden>
+    <div class="card">
+      <div class="quiz__top">
+        <span id="qCount">Question 1 of 7</span>
+        <span class="quiz__prize">Playing for <strong id="qPrize">1,000</strong></span>
+      </div>
+      <ol class="ladder-strip" id="strip" aria-hidden="true"></ol>
+
+      <div class="quiz__bar">
+        <div class="clock" id="clock" aria-hidden="true">
+          <svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="clock__bg" /><circle cx="22" cy="22" r="19" class="clock__fg" id="clockFg" /></svg>
+          <span id="clockNum">30</span>
+        </div>
+        <div class="lifelines" role="group" aria-label="Lifelines">
+          <button class="life" id="fiftyBtn" type="button">50:50</button>
+          <button class="life" id="askBtn" type="button">Ask Amina 💡</button>
+        </div>
+      </div>
+      <p class="sr" id="clockSr" aria-live="polite"></p>
+
+      <div class="quiz__body" id="qBody">
+        <div class="quiz__emoji" id="qEmoji">🎤</div>
+        <h2 class="quiz__question" id="qText"></h2>
+        <div class="options" id="qOptions" role="group" aria-label="Answers"></div>
+        <p class="hintline" id="qHint" aria-live="polite"></p>
+        <p class="feedback" id="qFeedback" aria-live="polite"></p>
+        <p class="fact" id="qFact"></p>
+      </div>
+
+      <button class="btn btn--primary" id="nextBtn" type="button" hidden>Next question →</button>
+    </div>
+  </section>
+
+  <!-- ============ 3. RESULT + INVITE ============ -->
+  <section class="screen" id="askScreen" hidden>
+    <div class="card">
+      <p class="eyebrow">And the final prize is…</p>
+      <p class="prize" id="prizeBig">0</p>
+      <p class="prize__unit" id="prizeUnit">party points</p>
+      <ol class="ladder" id="ladder"></ol>
+      <p class="meter__note" id="meterNote"></p>
+
+      <h2 class="ask__q" id="askQ"></h2>
+      <p class="hint" id="askHint" aria-live="polite"></p>
+      <div class="actions">
+        <button class="btn btn--yes" id="yesBtn" type="button">I'm in! 🎉</button>
+        <button class="btn btn--ghost" id="noBtn" type="button">Can't make it</button>
+      </div>
+      <a class="btn btn--whatsapp btn--full" id="waNo" target="_blank" rel="noopener" hidden>Tell Amina on WhatsApp 💬</a>
+    </div>
+  </section>
+
+  <!-- ============ 4. SUCCESS ============ -->
+  <section class="screen" id="successScreen" hidden>
+    <article class="card">
+      <span class="badge" id="badge">You're invited 🎟️</span>
+      <h2 class="success__title" id="successTitle"></h2>
+      <p class="success__message" id="message"></p>
+
+      <div id="eventBox">
+        <div class="times">
+          <div class="time">
+            <span class="time__flag" id="tMeFlag">🇮🇳</span>
+            <small id="tMeCity">Hyderabad</small>
+            <strong id="tMeTime">--</strong>
+            <em id="tMeDate"></em>
+          </div>
+          <div class="time__mid" aria-hidden="true">🎶</div>
+          <div class="time time--them">
+            <span class="time__flag" id="tThemFlag">🇦🇪</span>
+            <small id="tThemCity">Dubai</small>
+            <strong id="tThemTime">--</strong>
+            <em id="tThemDate"></em>
+          </div>
+        </div>
+        <div class="countdown" id="countdown">
+          <span class="countdown__label" id="cdLabel">Starts in</span>
+          <div class="countdown__digits" id="cdDigits">
+            <div><b id="cdD">0</b><small>days</small></div>
+            <div><b id="cdH">00</b><small>hrs</small></div>
+            <div><b id="cdM">00</b><small>min</small></div>
+            <div><b id="cdS">00</b><small>sec</small></div>
+          </div>
+        </div>
+        <ul class="details" id="details"></ul>
+      </div>
+
+      <div class="success__actions">
+        <button class="btn btn--primary" id="calendarBtn" type="button">Add to calendar 📅</button>
+        <a class="btn btn--whatsapp" id="waBtn" target="_blank" rel="noopener" hidden>Tell Amina on WhatsApp 💬</a>
+        <button class="btn btn--ghost" id="againBtn" type="button">More confetti 🎉</button>
+      </div>
+      <p class="signoff" id="signoff"></p>
+      <p class="brand" id="brand2" hidden>Made with Play Planet</p>
+    </article>
+  </section>
+
+  <script src="script.js?v=1"></script>
+</body>
+</html>
