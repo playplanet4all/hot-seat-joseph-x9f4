@@ -40,7 +40,7 @@ const CONFIG = {
   // The event. date + time are the wall-clock time in event.tz.
   event: {
     date: "2026-10-23",           // YYYY-MM-DD
-    time: "00:00",                // 24h HH:MM  ⚠️ please confirm (see README)
+    time: "19:00",                // 24h HH:MM  ⚠️ please confirm (see README)
     tz: "Asia/Dubai",             // the zone that date/time is written in
     durationMinutes: 120,
     calendarTitle: "{from}'s party 🎉",
